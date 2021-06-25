@@ -1,91 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 
 import './ExpenseForm.css';
 
+// import useLocalStorage from './uselocalstorage';
+
 const ExpenseForm = (props) => {
-  // const initialTitle = window.localStorage.getItem("Title");
-  // const initialFile = window.localStorage.getItem("File");
-  // const initialDate = window.localStorage.getItem("Date");
+  
 
-  // const [Title, setTitle] = useState('',initialTitle);
-  // const [File, setFile] = useState('',initialFile);
-  // const [enteredDate, setEnteredDate] = useState('',initialDate);
-  const [userInput, setUserInput] = useState({
-    Title: '',
-    enteredAmount: '',
-    enteredDate: '',
-  });
-  // const Title = ''
+  const [Title, setTitle] = useState('');
+  const [File, setFile] = useState('');
+  const [enteredDate, setEnteredDate] = useState('');
 
-  localStorage.setItem("Items",JSON.stringify(userInput));
+  // const [states, setstates] = useState(
+  //   {
+  //     "Title" : Title,
+  //     "Date" : enteredDate
+  //   }
+  // )
 
-  (JSON.parse(localStorage.getItem("Items")));
+  const [userInput, setuserInput] = useState({
+    Title,enteredDate
+  })
 
-  // useEffect(() => {
-  //   window.localStorage.setItem("Title",Title);
-  //   window.localStorage.setItem("Title",File);
-  //   window.localStorage.setItem("Title",enteredDate);
+  const inputRef = useRef(null);
 
+  useEffect (() => {
+    inputRef.current.focus();
+  })
+
+
+  // const [userInput, setuserInput] = useState({
+  //   Title: '',
+  //   enteredAmount: '',
+  //   enteredDate: '',
   // });
+  
+
+  
 
   const titleChangeHandler = (event) => {
-    // setTitle(event.target.value);
-    setUserInput({
-      ...userInput,
-      Title: event.target.value,
-    });
-    setUserInput((prevState) => {
-      return { ...prevState, Title: event.target.value };
-    });
+    setTitle(event.target.value);
+    // setuserInput({
+    //   ...userInput,
+    //   Title: event.target.value,
+    // });
+    // setuserInput((prevState) => {
+    //   return { ...prevState, Title: event.target.value };
+    // });
   };
 
   const FileChangeHandler = (event) => {
-    // setFile(event.target.value);
-    setUserInput({
-      ...userInput,
-      enteredAmount: event.target.value,
-    });
+    setFile(event.target.value);
+    // setuserInput({
+    //   ...userInput,
+    //   enteredAmount: event.target.value,
+    // });
   };
 
   const dateChangeHandler = (event) => {
-    // setEnteredDate(event.target.value);
-    setUserInput({
-      ...userInput,
-      enteredDate: event.target.value,
-    });
+    setEnteredDate(event.target.value);
+    // setuserInput({
+    //   ...userInput,
+    //   enteredDate: event.target.value,
+    // });
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
 
     const expenseData = {
-      title: userInput.Title,
-      amount: userInput.File,
-      date: new Date(userInput.enteredDate),
+      title: Title,
+      amount: File,
+      date: new Date(enteredDate),
     };
 
     props.onSaveExpenseData(expenseData);
-    setUserInput('')
-  };
 
+    setTitle('');
+    setEnteredDate('');
+    setFile('');
+    // const Title = {
+    //   Title:localStorage.setItem('Items',Title),
+    //   Date : localStorage.setItem('Date',enteredDate)
+    // }
+    // setTitle(...Title,Store);
+    //  setEnteredDate(...enteredDate,Store);
+    // const store = localStorage.setItem("Task",JSON.stringify);
+
+    // setstates(...states,store);
+
+
+    const store = {
+      ...userInput,
+    Title:  localStorage.setItem("Title",Title),
+    Date:  localStorage.setItem("Date",enteredDate)
+      
+    }
+    setuserInput(store);
+
+    //  <uselocalstorage/>
+    // localStorage.removeItem("items");
+   
+
+  };
+  
+
+  
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={submitHandler} >
       <div className='new-expense__controls'>
         <div className='new-expense__control'>
           <label>Title</label>
           <input
             type='text'
-            value={userInput.Title}
+            value={Title}
             onChange={titleChangeHandler}
+            ref={inputRef}
           />
         </div>
         <div className='new-expense__control'>
           <label>Image File</label>
           <input
             type='file'
-            min='0.01'
-            step='0.01'
-            value={userInput.File}
+            value={File}
             
             onChange={FileChangeHandler}
           />
@@ -97,7 +134,7 @@ const ExpenseForm = (props) => {
             type='date'
             min='2019-01-01'
             max='2022-12-31'
-            value={userInput.enteredDate}
+            value={enteredDate}
             onChange={dateChangeHandler}
           />
         </div>
@@ -105,6 +142,10 @@ const ExpenseForm = (props) => {
       <div className='new-expense__actions'>
         <button type='submit'>Add Expense</button>
       </div>
+      {/* {localStorage.getItem('Title') }
+         {localStorage.getItem('Date') } */}
+    
+
     </form>
   );
 };

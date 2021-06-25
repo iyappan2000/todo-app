@@ -4,7 +4,6 @@ import NewExpense from './components/NewExpense/NewExpense';
 import Expenses from './components/Expenses/Expenses';
 
 const DUMMY_EXPENSES = [
-
 ];
 /*Todo App Main Save Method */
 const App = () => {
@@ -27,6 +26,7 @@ const App = () => {
     newTodos.splice(index,1);
     setExpenses(newTodos);
   }
+
 
   return (
     <div>

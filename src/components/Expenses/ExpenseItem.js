@@ -14,6 +14,8 @@ const ExpenseItem = (props) => {
   const removeHandler = (index) => {
     props.OnSaveExpense(index);
     setTitle('');
+    localStorage.removeItem('Title');
+      localStorage.removeItem('Date');
   };
   const clickHandler = (e) => {
     setTitle(<input type = 'text'/>);
